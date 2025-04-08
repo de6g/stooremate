@@ -1,5 +1,5 @@
 
-import { PriceCalculator } from "@/components/PriceCalculator";
+import PriceCalculator from "@/components/PriceCalculator";
 
 const Index = () => {
   return (
