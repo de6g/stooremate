@@ -1,13 +1,10 @@
 
 import React from "react";
-import Dashboard from "@/components/Dashboard";
+import { Navigate } from "react-router-dom";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-gray-900 w-full">
-      <Dashboard />
-    </div>
-  );
+  // For now, simply redirect to the login page
+  return <Navigate to="/login" replace />;
 };
 
 export default Index;
