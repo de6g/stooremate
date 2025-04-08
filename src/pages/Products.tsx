@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft, Plus, Search, Tag, Package, Trash2, Edit } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import AddProductDialog from "@/components/AddProductDialog";
+import { toast } from "sonner";
 
 // Mock data for products
 const initialProducts = [
@@ -55,6 +57,7 @@ const initialProducts = [
 const Products = () => {
   const [products, setProducts] = useState(initialProducts);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const filteredProducts = products.filter(product => 
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -63,6 +66,21 @@ const Products = () => {
 
   const handleDeleteProduct = (id: string) => {
     setProducts(products.filter(product => product.id !== id));
+    toast.success("Product deleted successfully");
+  };
+
+  const handleAddProduct = (productData: {
+    name: string;
+    price: number;
+    category: string;
+    stock: number;
+  }) => {
+    const newProduct = {
+      id: `${products.length + 1}`,
+      ...productData,
+      status: productData.stock === 0 ? "Out of Stock" : productData.stock < 10 ? "Low Stock" : "In Stock"
+    };
+    setProducts([...products, newProduct]);
   };
 
   return (
@@ -77,11 +95,15 @@ const Products = () => {
             </Link>
             <h1 className="text-2xl font-bold ml-4">Product Management</h1>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700">
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700"
+            onClick={() => setIsAddDialogOpen(true)}
+          >
             <Plus className="mr-2 h-4 w-4" /> Add New Product
           </Button>
         </header>
 
+        {/* Product statistics cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <Card>
             <CardHeader className="pb-2">
@@ -128,6 +150,7 @@ const Products = () => {
           </Card>
         </div>
 
+        {/* Products table */}
         <Card>
           <CardHeader>
             <CardTitle className="flex justify-between items-center">
@@ -215,6 +238,12 @@ const Products = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <AddProductDialog 
+        isOpen={isAddDialogOpen}
+        onClose={() => setIsAddDialogOpen(false)}
+        onAddProduct={handleAddProduct}
+      />
     </div>
   );
 };
