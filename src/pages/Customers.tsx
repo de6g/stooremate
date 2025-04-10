@@ -38,6 +38,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Sample customer data
 const initialCustomers = [
@@ -93,13 +104,35 @@ const initialCustomers = [
   },
 ];
 
+// Form schema for adding a new customer
+const customerFormSchema = z.object({
+  name: z.string().min(2, { message: "الاسم مطلوب" }),
+  email: z.string().email({ message: "البريد الإلكتروني غير صالح" }),
+  phone: z.string().min(10, { message: "رقم الهاتف غير صالح" }),
+  location: z.string().min(2, { message: "الموقع مطلوب" }),
+});
+
+type CustomerFormValues = z.infer<typeof customerFormSchema>;
+
 const Customers = () => {
   const [customers, setCustomers] = useState(initialCustomers);
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
   const [selectedCustomer, setSelectedCustomer] = useState<typeof initialCustomers[0] | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
   
+  // Initialize form
+  const form = useForm<CustomerFormValues>({
+    resolver: zodResolver(customerFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      location: "",
+    },
+  });
+
   // Filter customers based on search term
   const filteredCustomers = customers.filter(customer => 
     customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -128,6 +161,28 @@ const Customers = () => {
       color: "bg-purple-50"
     },
   ];
+
+  // Handle adding a new customer
+  const onSubmit = (data: CustomerFormValues) => {
+    const newCustomer = {
+      id: customers.length > 0 ? Math.max(...customers.map(c => c.id)) + 1 : 1,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      location: data.location,
+      status: "نشط",
+      orders: 0,
+      lastPurchase: "-",
+    };
+    
+    setCustomers([...customers, newCustomer]);
+    toast({
+      title: "تم إضافة العميل",
+      description: "تم إضافة العميل بنجاح",
+    });
+    setIsAddCustomerOpen(false);
+    form.reset();
+  };
 
   // Handle deleting a customer
   const handleDeleteCustomer = (id: number) => {
@@ -183,7 +238,10 @@ const Customers = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
-                <Button className="flex items-center gap-2">
+                <Button 
+                  className="flex items-center gap-2"
+                  onClick={() => setIsAddCustomerOpen(true)}
+                >
                   <UserPlus className="h-4 w-4" />
                   <span>إضافة عميل</span>
                 </Button>
@@ -412,6 +470,90 @@ const Customers = () => {
                 </div>
               </div>
             )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Add Customer Dialog */}
+        <Dialog open={isAddCustomerOpen} onOpenChange={setIsAddCustomerOpen}>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle className="text-right">إضافة عميل جديد</DialogTitle>
+              <DialogDescription className="text-right">
+                أدخل بيانات العميل الجديد
+              </DialogDescription>
+            </DialogHeader>
+            
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4 text-right">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-right block">الاسم</FormLabel>
+                      <FormControl>
+                        <Input placeholder="أدخل اسم العميل" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-right" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-right block">البريد الإلكتروني</FormLabel>
+                      <FormControl>
+                        <Input placeholder="أدخل البريد الإلكتروني" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-right" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-right block">رقم الهاتف</FormLabel>
+                      <FormControl>
+                        <Input placeholder="أدخل رقم الهاتف" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-right" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-right block">الموقع</FormLabel>
+                      <FormControl>
+                        <Input placeholder="أدخل الموقع" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-right" />
+                    </FormItem>
+                  )}
+                />
+                
+                <div className="flex justify-start pt-4">
+                  <Button type="submit">إضافة العميل</Button>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => setIsAddCustomerOpen(false)}
+                    className="mr-2"
+                  >
+                    إلغاء
+                  </Button>
+                </div>
+              </form>
+            </Form>
           </DialogContent>
         </Dialog>
       </div>
