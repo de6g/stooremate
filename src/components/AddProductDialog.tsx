@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,30 +8,30 @@ import { toast } from "sonner";
 
 interface ProductFormData {
   name: string;
-  price: number;
+  price: string;
   category: string;
-  stock: number;
+  stock: string;
 }
 
 interface AddProductDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddProduct: (product: ProductFormData) => void;
+  onAddProduct: (product: { name: string; price: number; category: string; stock: number }) => void;
 }
 
 const AddProductDialog = ({ isOpen, onClose, onAddProduct }: AddProductDialogProps) => {
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
-    price: 0,
+    price: "",
     category: "",
-    stock: 0
+    stock: ""
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === "price" || name === "stock" ? parseFloat(value) || 0 : value
+      [name]: value
     }));
   };
 
@@ -41,8 +41,13 @@ const AddProductDialog = ({ isOpen, onClose, onAddProduct }: AddProductDialogPro
       toast.error("Please fill in all required fields");
       return;
     }
-    onAddProduct(formData);
-    setFormData({ name: "", price: 0, category: "", stock: 0 });
+    onAddProduct({
+      name: formData.name,
+      price: parseFloat(formData.price) || 0,
+      category: formData.category,
+      stock: parseInt(formData.stock) || 0
+    });
+    setFormData({ name: "", price: "", category: "", stock: "" });
     onClose();
     toast.success("Product added successfully");
   };
@@ -52,6 +57,9 @@ const AddProductDialog = ({ isOpen, onClose, onAddProduct }: AddProductDialogPro
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Add New Product</DialogTitle>
+          <DialogDescription>
+            Fill in the details to add a new product to your inventory.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -75,8 +83,8 @@ const AddProductDialog = ({ isOpen, onClose, onAddProduct }: AddProductDialogPro
               id="price"
               name="price"
               type="number"
-              min={0}
-              step={0.01}
+              min="0"
+              step="0.01"
               value={formData.price}
               onChange={handleInputChange}
               className="col-span-3"
@@ -103,7 +111,7 @@ const AddProductDialog = ({ isOpen, onClose, onAddProduct }: AddProductDialogPro
               id="stock"
               name="stock"
               type="number"
-              min={0}
+              min="0"
               value={formData.stock}
               onChange={handleInputChange}
               className="col-span-3"
