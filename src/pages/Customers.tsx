@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
 import { 
   Table, 
   TableBody, 
@@ -202,9 +203,17 @@ const Customers = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-7xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-right">إدارة العملاء</h1>
-          <p className="text-gray-600 text-right">إدارة وعرض بيانات عملاء المتجر</p>
+        <header className="mb-8 flex items-center justify-between">
+          <Link to="/dashboard" className="mr-auto">
+            <Button variant="outline" size="sm" className="flex items-center gap-2">
+              <ChevronLeft className="h-4 w-4" />
+              العودة للوحة التحكم
+            </Button>
+          </Link>
+          <div className="flex-grow text-right">
+            <h1 className="text-3xl font-bold">إدارة العملاء</h1>
+            <p className="text-gray-600">إدارة وعرض بيانات عملاء المتجر</p>
+          </div>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
