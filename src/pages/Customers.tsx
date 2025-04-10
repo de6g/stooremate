@@ -26,10 +26,18 @@ import {
   MapPin, 
   ArrowUpDown,
   Users,
-  UserCheck
+  UserCheck,
+  Eye
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Sample customer data
 const initialCustomers = [
@@ -89,6 +97,8 @@ const Customers = () => {
   const [customers, setCustomers] = useState(initialCustomers);
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
+  const [selectedCustomer, setSelectedCustomer] = useState<typeof initialCustomers[0] | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   
   // Filter customers based on search term
   const filteredCustomers = customers.filter(customer => 
@@ -126,6 +136,12 @@ const Customers = () => {
       title: "تم حذف العميل",
       description: "تم حذف العميل بنجاح",
     });
+  };
+
+  // Handle viewing customer details
+  const handleViewCustomer = (customer: typeof initialCustomers[0]) => {
+    setSelectedCustomer(customer);
+    setIsDetailsOpen(true);
   };
 
   return (
@@ -236,7 +252,12 @@ const Customers = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex justify-end gap-2">
-                            <Button variant="ghost" size="sm">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => handleViewCustomer(customer)}
+                            >
+                              <Eye className="h-4 w-4 mr-1" />
                               عرض
                             </Button>
                             <Button 
@@ -257,6 +278,142 @@ const Customers = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Customer Details Dialog */}
+        <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+          <DialogContent className="sm:max-w-[550px]">
+            <DialogHeader>
+              <DialogTitle className="text-right">بيانات العميل</DialogTitle>
+              <DialogDescription className="text-right">
+                تفاصيل بيانات العميل وسجل المشتريات
+              </DialogDescription>
+            </DialogHeader>
+            
+            {selectedCustomer && (
+              <div className="flex flex-col gap-4 mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg text-right">المعلومات الشخصية</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3 text-right">
+                        <div className="flex justify-end gap-2 items-center">
+                          <span className="font-bold">{selectedCustomer.name}</span>
+                          <Badge variant={selectedCustomer.status === "نشط" ? "default" : "outline"}>
+                            {selectedCustomer.status}
+                          </Badge>
+                        </div>
+                        
+                        <div className="flex justify-end gap-2 items-center">
+                          <span>{selectedCustomer.email}</span>
+                          <Mail className="h-4 w-4 text-gray-500" />
+                        </div>
+                        
+                        <div className="flex justify-end gap-2 items-center">
+                          <span>{selectedCustomer.phone}</span>
+                          <Phone className="h-4 w-4 text-gray-500" />
+                        </div>
+                        
+                        <div className="flex justify-end gap-2 items-center">
+                          <span>{selectedCustomer.location}</span>
+                          <MapPin className="h-4 w-4 text-gray-500" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg text-right">إحصائيات المشتريات</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3 text-right">
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium">{selectedCustomer.orders}</span>
+                          <span className="text-gray-600">عدد الطلبات</span>
+                        </div>
+                        
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium">{selectedCustomer.lastPurchase}</span>
+                          <span className="text-gray-600">آخر طلب</span>
+                        </div>
+                        
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium">950 ريال</span>
+                          <span className="text-gray-600">متوسط قيمة الطلب</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg text-right">آخر الطلبات</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {selectedCustomer.orders > 0 ? (
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="text-right">رقم الطلب</TableHead>
+                            <TableHead className="text-right">التاريخ</TableHead>
+                            <TableHead className="text-right">المنتجات</TableHead>
+                            <TableHead className="text-right">القيمة</TableHead>
+                            <TableHead className="text-right">الحالة</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell className="text-right">#1089</TableCell>
+                            <TableCell className="text-right">2025-03-15</TableCell>
+                            <TableCell className="text-right">3</TableCell>
+                            <TableCell className="text-right">850 ريال</TableCell>
+                            <TableCell className="text-right">
+                              <Badge className="ml-auto">مكتمل</Badge>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-right">#1045</TableCell>
+                            <TableCell className="text-right">2025-02-28</TableCell>
+                            <TableCell className="text-right">2</TableCell>
+                            <TableCell className="text-right">1200 ريال</TableCell>
+                            <TableCell className="text-right">
+                              <Badge className="ml-auto">مكتمل</Badge>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="text-right">#1023</TableCell>
+                            <TableCell className="text-right">2025-02-10</TableCell>
+                            <TableCell className="text-right">5</TableCell>
+                            <TableCell className="text-right">750 ريال</TableCell>
+                            <TableCell className="text-right">
+                              <Badge className="ml-auto">مكتمل</Badge>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    ) : (
+                      <div className="text-center py-6 text-gray-500">
+                        لا توجد طلبات سابقة لهذا العميل
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+                
+                <div className="flex justify-start mt-2">
+                  <Button 
+                    onClick={() => setIsDetailsOpen(false)}
+                    variant="outline"
+                  >
+                    إغلاق
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
