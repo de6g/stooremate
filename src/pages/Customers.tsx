@@ -1,7 +1,7 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { 
   Table, 
   TableBody, 
@@ -18,7 +18,6 @@ import {
   CardTitle 
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { 
   Search, 
   UserPlus, 
@@ -51,7 +50,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// Sample customer data
 const initialCustomers = [
   {
     id: 1,
@@ -105,7 +103,6 @@ const initialCustomers = [
   },
 ];
 
-// Form schema for adding a new customer
 const customerFormSchema = z.object({
   name: z.string().min(2, { message: "الاسم مطلوب" }),
   email: z.string().email({ message: "البريد الإلكتروني غير صالح" }),
@@ -123,7 +120,6 @@ const Customers = () => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
   
-  // Initialize form
   const form = useForm<CustomerFormValues>({
     resolver: zodResolver(customerFormSchema),
     defaultValues: {
@@ -134,14 +130,12 @@ const Customers = () => {
     },
   });
 
-  // Filter customers based on search term
   const filteredCustomers = customers.filter(customer => 
     customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     customer.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Stats cards data
   const stats = [
     {
       title: "إجمالي العملاء",
@@ -163,7 +157,6 @@ const Customers = () => {
     },
   ];
 
-  // Handle adding a new customer
   const onSubmit = (data: CustomerFormValues) => {
     const newCustomer = {
       id: customers.length > 0 ? Math.max(...customers.map(c => c.id)) + 1 : 1,
@@ -185,7 +178,6 @@ const Customers = () => {
     form.reset();
   };
 
-  // Handle deleting a customer
   const handleDeleteCustomer = (id: number) => {
     setCustomers(customers.filter(customer => customer.id !== id));
     toast({
@@ -194,7 +186,6 @@ const Customers = () => {
     });
   };
 
-  // Handle viewing customer details
   const handleViewCustomer = (customer: typeof initialCustomers[0]) => {
     setSelectedCustomer(customer);
     setIsDetailsOpen(true);
@@ -203,16 +194,14 @@ const Customers = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-7xl mx-auto">
-        <header className="mb-8 flex items-center justify-between">
-          <Link to="/dashboard" className="mr-auto">
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
-              <ChevronLeft className="h-4 w-4" />
-              العودة للوحة التحكم
-            </Button>
-          </Link>
-          <div className="flex-grow text-right">
-            <h1 className="text-3xl font-bold">إدارة العملاء</h1>
-            <p className="text-gray-600">إدارة وعرض بيانات عملاء المتجر</p>
+        <header className="flex justify-between items-center mb-6">
+          <div className="flex items-center">
+            <Link to="/dashboard">
+              <Button variant="ghost" size="sm">
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+              </Button>
+            </Link>
+            <h1 className="text-2xl font-bold ml-4">إدارة العملاء</h1>
           </div>
         </header>
 
@@ -346,7 +335,6 @@ const Customers = () => {
           </CardContent>
         </Card>
 
-        {/* Customer Details Dialog */}
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogContent className="sm:max-w-[550px]">
             <DialogHeader>
@@ -482,7 +470,6 @@ const Customers = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Add Customer Dialog */}
         <Dialog open={isAddCustomerOpen} onOpenChange={setIsAddCustomerOpen}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
