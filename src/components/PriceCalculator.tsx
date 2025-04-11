@@ -39,8 +39,8 @@ const PriceCalculator = () => {
       
     } catch (error) {
       toast({
-        title: "خطأ في الحساب",
-        description: "يرجى التحقق من القيم المدخلة",
+        title: "Calculation Error",
+        description: "Please check the entered values",
         variant: "destructive",
       });
     }
@@ -55,80 +55,76 @@ const PriceCalculator = () => {
     <Card className="w-full max-w-md mx-auto shadow-lg border-calculator-light">
       <CardHeader className="bg-gradient-to-r from-calculator to-calculator-dark text-white">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-2xl font-bold text-right">حاسبة المتجر الإلكتروني</CardTitle>
+          <CardTitle className="text-2xl font-bold">E-commerce Price Calculator</CardTitle>
           <Calculator size={28} />
         </div>
       </CardHeader>
-      <CardContent className="pt-6 space-y-4 text-right" dir="rtl">
+      <CardContent className="pt-6 space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="productPrice" className="text-right block">سعر المنتج</Label>
+          <Label htmlFor="productPrice">Product Price</Label>
           <Input
             id="productPrice"
             type="number"
             min="0"
             step="0.01"
-            placeholder="أدخل سعر المنتج"
+            placeholder="Enter product price"
             value={productPrice}
             onChange={(e) => setProductPrice(e.target.value)}
-            className="text-right"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="shippingCost" className="text-right block">تكلفة الشحن</Label>
+          <Label htmlFor="shippingCost">Shipping Cost</Label>
           <Input
             id="shippingCost"
             type="number"
             min="0"
             step="0.01"
-            placeholder="أدخل تكلفة الشحن"
+            placeholder="Enter shipping cost"
             value={shippingCost}
             onChange={(e) => setShippingCost(e.target.value)}
-            className="text-right"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="discountPercentage" className="text-right block">نسبة الخصم (%)</Label>
+          <Label htmlFor="discountPercentage">Discount Percentage (%)</Label>
           <Input
             id="discountPercentage"
             type="number"
             min="0"
             max="100"
             step="0.1"
-            placeholder="أدخل نسبة الخصم"
+            placeholder="Enter discount percentage"
             value={discountPercentage}
             onChange={(e) => setDiscountPercentage(e.target.value)}
-            className="text-right"
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="taxPercentage" className="text-right block">نسبة الضريبة (%)</Label>
+          <Label htmlFor="taxPercentage">Tax Percentage (%)</Label>
           <Input
             id="taxPercentage"
             type="number"
             min="0"
             step="0.1"
-            placeholder="أدخل نسبة الضريبة"
+            placeholder="Enter tax percentage"
             value={taxPercentage}
             onChange={(e) => setTaxPercentage(e.target.value)}
-            className="text-right"
           />
         </div>
       </CardContent>
       
-      <CardFooter className="bg-gray-50 p-6 flex flex-col space-y-2 text-right" dir="rtl">
+      <CardFooter className="bg-gray-50 p-6 flex flex-col space-y-2">
         <div className="w-full flex justify-between items-center">
-          <span className="text-gray-600">المجموع بعد الخصم:</span>
+          <span className="text-gray-600">Total after discount:</span>
           <span className="font-semibold">{formatNumber(discountedPrice)}</span>
         </div>
         <div className="w-full flex justify-between items-center">
-          <span className="text-gray-600">قيمة الضريبة:</span>
+          <span className="text-gray-600">Tax amount:</span>
           <span className="font-semibold">{formatNumber(taxAmount)}</span>
         </div>
         <div className="w-full flex justify-between items-center pt-2 border-t border-gray-200 mt-2">
-          <span className="text-lg font-bold text-calculator-dark">المجموع النهائي:</span>
+          <span className="text-lg font-bold text-calculator-dark">Final total:</span>
           <span className="text-lg font-bold text-calculator">{formatNumber(finalTotal)}</span>
         </div>
       </CardFooter>

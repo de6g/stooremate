@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -53,61 +54,61 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const initialCustomers = [
   {
     id: 1,
-    name: "أحمد محمد",
+    name: "Ahmed Mohammed",
     email: "ahmed@example.com",
     phone: "966-55-123-4567",
-    location: "الرياض",
-    status: "نشط",
+    location: "Riyadh",
+    status: "Active",
     orders: 12,
     lastPurchase: "2025-03-15",
   },
   {
     id: 2,
-    name: "سارة علي",
+    name: "Sara Ali",
     email: "sara@example.com",
     phone: "966-50-987-6543",
-    location: "جدة",
-    status: "نشط",
+    location: "Jeddah",
+    status: "Active",
     orders: 8,
     lastPurchase: "2025-04-02",
   },
   {
     id: 3,
-    name: "محمد خالد",
+    name: "Mohammed Khalid",
     email: "mohammed@example.com",
     phone: "966-54-111-2222",
-    location: "الدمام",
-    status: "غير نشط",
+    location: "Dammam",
+    status: "Inactive",
     orders: 3,
     lastPurchase: "2025-01-20",
   },
   {
     id: 4,
-    name: "فاطمة عبدالله",
+    name: "Fatima Abdullah",
     email: "fatima@example.com",
     phone: "966-56-333-4444",
-    location: "مكة",
-    status: "نشط",
+    location: "Mecca",
+    status: "Active",
     orders: 15,
     lastPurchase: "2025-03-28",
   },
   {
     id: 5,
-    name: "عمر سعيد",
+    name: "Omar Saeed",
     email: "omar@example.com",
     phone: "966-59-555-6666",
-    location: "المدينة",
-    status: "غير نشط",
+    location: "Medina",
+    status: "Inactive",
     orders: 0,
     lastPurchase: "-",
   },
 ];
 
 const customerFormSchema = z.object({
-  name: z.string().min(2, { message: "الاسم مطلوب" }),
-  email: z.string().email({ message: "البريد الإلكتروني غير صالح" }),
-  phone: z.string().min(10, { message: "رقم الهاتف غير صالح" }),
-  location: z.string().min(2, { message: "الموقع مطلوب" }),
+  name: z.string().min(2, { message: "Name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  phone: z.string().min(10, { message: "Invalid phone number" }),
+  location: z.string().min(2, { message: "Location is required" }),
 });
 
 type CustomerFormValues = z.infer<typeof customerFormSchema>;
@@ -138,19 +139,19 @@ const Customers = () => {
 
   const stats = [
     {
-      title: "إجمالي العملاء",
+      title: "Total Customers",
       value: customers.length,
       icon: <Users className="h-4 w-4 text-blue-500" />,
       color: "bg-blue-50"
     },
     {
-      title: "العملاء النشطين",
-      value: customers.filter(c => c.status === "نشط").length,
+      title: "Active Customers",
+      value: customers.filter(c => c.status === "Active").length,
       icon: <UserCheck className="h-4 w-4 text-green-500" />,
       color: "bg-green-50"
     },
     {
-      title: "عملاء جدد (هذا الشهر)",
+      title: "New Customers (This Month)",
       value: 3,
       icon: <UserPlus className="h-4 w-4 text-purple-500" />,
       color: "bg-purple-50"
@@ -164,15 +165,15 @@ const Customers = () => {
       email: data.email,
       phone: data.phone,
       location: data.location,
-      status: "نشط",
+      status: "Active",
       orders: 0,
       lastPurchase: "-",
     };
     
     setCustomers([...customers, newCustomer]);
     toast({
-      title: "تم إضافة العميل",
-      description: "تم إضافة العميل بنجاح",
+      title: "Customer Added",
+      description: "Customer has been added successfully",
     });
     setIsAddCustomerOpen(false);
     form.reset();
@@ -181,8 +182,8 @@ const Customers = () => {
   const handleDeleteCustomer = (id: number) => {
     setCustomers(customers.filter(customer => customer.id !== id));
     toast({
-      title: "تم حذف العميل",
-      description: "تم حذف العميل بنجاح",
+      title: "Customer Deleted",
+      description: "Customer has been deleted successfully",
     });
   };
 
@@ -201,7 +202,7 @@ const Customers = () => {
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold ml-4">إدارة العملاء</h1>
+            <h1 className="text-2xl font-bold ml-4">Customer Management</h1>
           </div>
         </header>
 
@@ -223,14 +224,14 @@ const Customers = () => {
           <CardHeader className="pb-2">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <CardTitle>قائمة العملاء</CardTitle>
-                <CardDescription>عرض وإدارة جميع العملاء</CardDescription>
+                <CardTitle>Customer List</CardTitle>
+                <CardDescription>View and manage all customers</CardDescription>
               </div>
               <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                 <div className="relative">
                   <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
-                    placeholder="بحث عن عميل"
+                    placeholder="Search customers"
                     className="pl-8 pr-4 w-full sm:w-[250px]"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -241,7 +242,7 @@ const Customers = () => {
                   onClick={() => setIsAddCustomerOpen(true)}
                 >
                   <UserPlus className="h-4 w-4" />
-                  <span>إضافة عميل</span>
+                  <span>Add Customer</span>
                 </Button>
               </div>
             </div>
@@ -251,24 +252,24 @@ const Customers = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[200px]">الاسم</TableHead>
-                    <TableHead>معلومات الاتصال</TableHead>
-                    <TableHead>الموقع</TableHead>
-                    <TableHead>الحالة</TableHead>
+                    <TableHead className="w-[200px]">Name</TableHead>
+                    <TableHead>Contact Information</TableHead>
+                    <TableHead>Location</TableHead>
+                    <TableHead>Status</TableHead>
                     <TableHead className="text-right">
                       <div className="flex items-center justify-end">
-                        <span>الطلبات</span>
-                        <ArrowUpDown className="mr-2 h-4 w-4" />
+                        <span>Orders</span>
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
                       </div>
                     </TableHead>
-                    <TableHead className="text-right">إجراءات</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredCustomers.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={6} className="text-center py-8 text-gray-500">
-                        لم يتم العثور على عملاء
+                        No customers found
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -294,7 +295,7 @@ const Customers = () => {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={customer.status === "نشط" ? "default" : "outline"}>
+                          <Badge variant={customer.status === "Active" ? "default" : "outline"}>
                             {customer.status}
                           </Badge>
                         </TableCell>
@@ -302,7 +303,7 @@ const Customers = () => {
                           <div className="text-right">
                             <div>{customer.orders}</div>
                             <div className="text-xs text-gray-500">
-                              آخر طلب: {customer.lastPurchase}
+                              Last order: {customer.lastPurchase}
                             </div>
                           </div>
                         </TableCell>
@@ -314,7 +315,7 @@ const Customers = () => {
                               onClick={() => handleViewCustomer(customer)}
                             >
                               <Eye className="h-4 w-4 mr-1" />
-                              عرض
+                              View
                             </Button>
                             <Button 
                               variant="ghost" 
@@ -322,7 +323,7 @@ const Customers = () => {
                               className="text-red-500 hover:text-red-700"
                               onClick={() => handleDeleteCustomer(customer.id)}
                             >
-                              حذف
+                              Delete
                             </Button>
                           </div>
                         </TableCell>
@@ -338,9 +339,9 @@ const Customers = () => {
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogContent className="sm:max-w-[550px]">
             <DialogHeader>
-              <DialogTitle className="text-right">بيانات العميل</DialogTitle>
-              <DialogDescription className="text-right">
-                تفاصيل بيانات العميل وسجل المشتريات
+              <DialogTitle>Customer Details</DialogTitle>
+              <DialogDescription>
+                Customer information and purchase history
               </DialogDescription>
             </DialogHeader>
             
@@ -349,30 +350,30 @@ const Customers = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-lg text-right">المعلومات الشخصية</CardTitle>
+                      <CardTitle className="text-lg">Personal Information</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-3 text-right">
-                        <div className="flex justify-end gap-2 items-center">
+                      <div className="space-y-3">
+                        <div className="flex justify-between gap-2 items-center">
                           <span className="font-bold">{selectedCustomer.name}</span>
-                          <Badge variant={selectedCustomer.status === "نشط" ? "default" : "outline"}>
+                          <Badge variant={selectedCustomer.status === "Active" ? "default" : "outline"}>
                             {selectedCustomer.status}
                           </Badge>
                         </div>
                         
-                        <div className="flex justify-end gap-2 items-center">
-                          <span>{selectedCustomer.email}</span>
+                        <div className="flex items-center gap-2">
                           <Mail className="h-4 w-4 text-gray-500" />
+                          <span>{selectedCustomer.email}</span>
                         </div>
                         
-                        <div className="flex justify-end gap-2 items-center">
-                          <span>{selectedCustomer.phone}</span>
+                        <div className="flex items-center gap-2">
                           <Phone className="h-4 w-4 text-gray-500" />
+                          <span>{selectedCustomer.phone}</span>
                         </div>
                         
-                        <div className="flex justify-end gap-2 items-center">
-                          <span>{selectedCustomer.location}</span>
+                        <div className="flex items-center gap-2">
                           <MapPin className="h-4 w-4 text-gray-500" />
+                          <span>{selectedCustomer.location}</span>
                         </div>
                       </div>
                     </CardContent>
@@ -380,23 +381,23 @@ const Customers = () => {
                   
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-lg text-right">إحصائيات المشتريات</CardTitle>
+                      <CardTitle className="text-lg">Purchase Statistics</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-3 text-right">
+                      <div className="space-y-3">
                         <div className="flex justify-between items-center">
                           <span className="font-medium">{selectedCustomer.orders}</span>
-                          <span className="text-gray-600">عدد الطلبات</span>
+                          <span className="text-gray-600">Number of Orders</span>
                         </div>
                         
                         <div className="flex justify-between items-center">
                           <span className="font-medium">{selectedCustomer.lastPurchase}</span>
-                          <span className="text-gray-600">آخر طلب</span>
+                          <span className="text-gray-600">Last Order</span>
                         </div>
                         
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">950 ريال</span>
-                          <span className="text-gray-600">متوسط قيمة الطلب</span>
+                          <span className="font-medium">$950</span>
+                          <span className="text-gray-600">Average Order Value</span>
                         </div>
                       </div>
                     </CardContent>
@@ -405,53 +406,53 @@ const Customers = () => {
                 
                 <Card>
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg text-right">آخر الطلبات</CardTitle>
+                    <CardTitle className="text-lg">Recent Orders</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {selectedCustomer.orders > 0 ? (
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead className="text-right">رقم الطلب</TableHead>
-                            <TableHead className="text-right">التاريخ</TableHead>
-                            <TableHead className="text-right">المنتجات</TableHead>
-                            <TableHead className="text-right">القيمة</TableHead>
-                            <TableHead className="text-right">الحالة</TableHead>
+                            <TableHead>Order ID</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Products</TableHead>
+                            <TableHead>Value</TableHead>
+                            <TableHead>Status</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           <TableRow>
-                            <TableCell className="text-right">#1089</TableCell>
-                            <TableCell className="text-right">2025-03-15</TableCell>
-                            <TableCell className="text-right">3</TableCell>
-                            <TableCell className="text-right">850 ريال</TableCell>
-                            <TableCell className="text-right">
-                              <Badge className="ml-auto">مكتمل</Badge>
+                            <TableCell>#1089</TableCell>
+                            <TableCell>2025-03-15</TableCell>
+                            <TableCell>3</TableCell>
+                            <TableCell>$850</TableCell>
+                            <TableCell>
+                              <Badge>Completed</Badge>
                             </TableCell>
                           </TableRow>
                           <TableRow>
-                            <TableCell className="text-right">#1045</TableCell>
-                            <TableCell className="text-right">2025-02-28</TableCell>
-                            <TableCell className="text-right">2</TableCell>
-                            <TableCell className="text-right">1200 ريال</TableCell>
-                            <TableCell className="text-right">
-                              <Badge className="ml-auto">مكتمل</Badge>
+                            <TableCell>#1045</TableCell>
+                            <TableCell>2025-02-28</TableCell>
+                            <TableCell>2</TableCell>
+                            <TableCell>$1,200</TableCell>
+                            <TableCell>
+                              <Badge>Completed</Badge>
                             </TableCell>
                           </TableRow>
                           <TableRow>
-                            <TableCell className="text-right">#1023</TableCell>
-                            <TableCell className="text-right">2025-02-10</TableCell>
-                            <TableCell className="text-right">5</TableCell>
-                            <TableCell className="text-right">750 ريال</TableCell>
-                            <TableCell className="text-right">
-                              <Badge className="ml-auto">مكتمل</Badge>
+                            <TableCell>#1023</TableCell>
+                            <TableCell>2025-02-10</TableCell>
+                            <TableCell>5</TableCell>
+                            <TableCell>$750</TableCell>
+                            <TableCell>
+                              <Badge>Completed</Badge>
                             </TableCell>
                           </TableRow>
                         </TableBody>
                       </Table>
                     ) : (
                       <div className="text-center py-6 text-gray-500">
-                        لا توجد طلبات سابقة لهذا العميل
+                        No previous orders for this customer
                       </div>
                     )}
                   </CardContent>
@@ -462,7 +463,7 @@ const Customers = () => {
                     onClick={() => setIsDetailsOpen(false)}
                     variant="outline"
                   >
-                    إغلاق
+                    Close
                   </Button>
                 </div>
               </div>
@@ -473,24 +474,24 @@ const Customers = () => {
         <Dialog open={isAddCustomerOpen} onOpenChange={setIsAddCustomerOpen}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle className="text-right">إضافة عميل جديد</DialogTitle>
-              <DialogDescription className="text-right">
-                أدخل بيانات العميل الجديد
+              <DialogTitle>Add New Customer</DialogTitle>
+              <DialogDescription>
+                Enter the details of the new customer
               </DialogDescription>
             </DialogHeader>
             
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4 text-right">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-right block">الاسم</FormLabel>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="أدخل اسم العميل" {...field} />
+                        <Input placeholder="Enter customer name" {...field} />
                       </FormControl>
-                      <FormMessage className="text-right" />
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -500,11 +501,11 @@ const Customers = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-right block">البريد الإلكتروني</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="أدخل البريد الإلكتروني" {...field} />
+                        <Input placeholder="Enter email address" {...field} />
                       </FormControl>
-                      <FormMessage className="text-right" />
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -514,11 +515,11 @@ const Customers = () => {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-right block">رقم الهاتف</FormLabel>
+                      <FormLabel>Phone Number</FormLabel>
                       <FormControl>
-                        <Input placeholder="أدخل رقم الهاتف" {...field} />
+                        <Input placeholder="Enter phone number" {...field} />
                       </FormControl>
-                      <FormMessage className="text-right" />
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -528,25 +529,25 @@ const Customers = () => {
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-right block">الموقع</FormLabel>
+                      <FormLabel>Location</FormLabel>
                       <FormControl>
-                        <Input placeholder="أدخل الموقع" {...field} />
+                        <Input placeholder="Enter location" {...field} />
                       </FormControl>
-                      <FormMessage className="text-right" />
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
                 
-                <div className="flex justify-start pt-4">
-                  <Button type="submit">إضافة العميل</Button>
+                <div className="flex justify-end pt-4">
                   <Button 
                     type="button" 
                     variant="outline" 
                     onClick={() => setIsAddCustomerOpen(false)}
                     className="mr-2"
                   >
-                    إلغاء
+                    Cancel
                   </Button>
+                  <Button type="submit">Add Customer</Button>
                 </div>
               </form>
             </Form>
