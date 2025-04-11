@@ -12,12 +12,12 @@ const Calculator = () => {
         <header className="flex justify-between items-center mb-6">
           <Link to="/dashboard">
             <Button variant="ghost" size="sm">
-              <ArrowLeft className="mr-2 h-4 w-4" /> العودة للوحة التحكم
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
             </Button>
           </Link>
           <div className="flex items-center">
             <CalcIcon className="mr-2 h-6 w-6 text-calculator" />
-            <h1 className="text-2xl font-bold">حاسبة الأسعار</h1>
+            <h1 className="text-2xl font-bold">Price Calculator</h1>
           </div>
         </header>
         <PriceCalculator />

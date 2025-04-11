@@ -8,30 +8,30 @@ import { Button } from "@/components/ui/button";
 const Dashboard = () => {
   const features = [
     {
-      title: "حاسبة الأسعار",
+      title: "Price Calculator",
       icon: Calculator,
-      description: "احسب أسعار منتجاتك مع الضرائب والشحن والخصومات",
+      description: "Calculate product prices with taxes, shipping, and discounts",
       link: "/calculator",
       color: "bg-blue-100"
     },
     {
-      title: "المنتجات",
+      title: "Products",
       icon: ShoppingBag,
-      description: "إدارة المنتجات والمخزون",
+      description: "Manage products and inventory",
       link: "/products",
       color: "bg-green-100"
     },
     {
-      title: "العملاء",
+      title: "Customers",
       icon: Users,
-      description: "قاعدة بيانات العملاء وإدارة العلاقات",
+      description: "Customer database and relationship management",
       link: "/customers",
       color: "bg-purple-100"
     },
     {
-      title: "الإعدادات",
+      title: "Settings",
       icon: Settings,
-      description: "إعدادات المتجر وحساب المستخدم",
+      description: "Store settings and user account",
       link: "/settings",
       color: "bg-gray-100"
     }
@@ -42,12 +42,12 @@ const Dashboard = () => {
       <div className="max-w-6xl mx-auto">
         <header className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-right">لوحة تحكم المتجر</h1>
-            <p className="text-gray-600 text-right">مرحبًا بك في نظام إدارة متجرك</p>
+            <h1 className="text-3xl font-bold">Store Dashboard</h1>
+            <p className="text-gray-600">Welcome to your store management system</p>
           </div>
           <Link to="/login">
             <Button variant="outline" size="sm">
-              <LogOut className="mr-2 h-4 w-4" /> تسجيل الخروج
+              <LogOut className="mr-2 h-4 w-4" /> Logout
             </Button>
           </Link>
         </header>

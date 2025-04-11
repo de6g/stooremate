@@ -18,8 +18,8 @@ const Login = () => {
     
     // For now, just show a toast notification since there's no backend
     toast({
-      title: "تم تسجيل الدخول بنجاح",
-      description: "سيتم توفير التحقق من الهوية قريبًا",
+      title: "Login successful",
+      description: "Authentication will be implemented soon",
     });
 
     // Navigate to calculator page (would be handled by auth in the future)
@@ -29,32 +29,31 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl text-right">تسجيل الدخول</CardTitle>
-          <p className="text-sm text-muted-foreground text-right">
-            أدخل بيانات الدخول للوصول إلى لوحة التحكم
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl">Login</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Enter your credentials to access your dashboard
           </p>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            <div className="space-y-2 text-right">
-              <Label htmlFor="email" className="text-right block">البريد الإلكتروني</Label>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email" 
                 placeholder="example@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                dir="rtl"
                 required
               />
             </div>
-            <div className="space-y-2 text-right">
+            <div className="space-y-2">
               <div className="flex justify-between">
+                <Label htmlFor="password">Password</Label>
                 <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-                  نسيت كلمة المرور؟
+                  Forgot password?
                 </Link>
-                <Label htmlFor="password" className="text-right block">كلمة المرور</Label>
               </div>
               <Input
                 id="password"
@@ -62,19 +61,18 @@ const Login = () => {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                dir="rtl"
                 required
               />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <Button type="submit" className="w-full">
-              <LogIn className="mr-2 h-4 w-4" /> تسجيل الدخول
+              <LogIn className="mr-2 h-4 w-4" /> Login
             </Button>
             <div className="text-center text-sm">
-              ليس لديك حساب؟{" "}
+              Don't have an account?{" "}
               <Link to="/signup" className="text-primary hover:underline">
-                إنشاء حساب جديد
+                Sign up
               </Link>
             </div>
           </CardFooter>
