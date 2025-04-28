@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => {
   return {
-    // 👈 بيغير المسار حسب هل احنا في production ولا development
+    
     base: mode === "production" ? "/StoreMate-Live/" : "./",
 
     server: {
